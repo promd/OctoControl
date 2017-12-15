@@ -1,0 +1,16 @@
+{
+  "name": "octosock",
+  "version": "1.0.0",
+  "description": "receive push messages from octorint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dietrich.m.3@pg.com",
+  "license": "ISC",
+  "dependencies": {
+    "http-request": "^0.7.0",
+    "particle-api-js": "^7.0.1",
+    "sockjs-client": "^1.1.4"
+  }
+}

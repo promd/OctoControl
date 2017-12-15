@@ -1,0 +1,12 @@
+{
+    "printers" : [ {"api"   : "Octoprint API key",
+                    "bootup": true,
+                    "name"  : "Printer Name",
+                    "event" : "Octoprint_job_state",
+                    "coreid": "ID of the Particle",
+                    "url"   : "Octoprint URL" } 
+    ],
+    "cloud_session" : {  "debug"     : true,
+                         "user"      : "particle user name",
+                         "pass"      : "particle password" }
+}
