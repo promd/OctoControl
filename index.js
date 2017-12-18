@@ -31,7 +31,7 @@ fs.stat(cfg_file, function(err, stat) {
                                                                     isPrivate : true });
                     publishEventPr.then(
                       function(data) {
-                          console.log('Dimmed LED for ' + defaults.printers[i].coreid + ' to ' + defaults.button_settings.dim_led);
+                          console.log('Dimmed LED. ' + data);
                       },
                       function(err) {
                         console.log("Failed to publish event: " + err)
@@ -50,7 +50,7 @@ fs.stat(cfg_file, function(err, stat) {
                                                                     isPrivate : true });
                     publishEventPr.then(
                       function(data) {
-                          console.log('Dimmed LED for ' + defaults.printers[i].coreid + ' to ' + defaults.button_settings.bright_led);
+                          console.log('Dimmed LED. ' + data);
                       },
                       function(err) {
                         console.log("Failed to publish event: " + err)
@@ -169,6 +169,9 @@ function createSock(printer) {
          
          if (e.data.hasOwnProperty('current')) {
              var state = e.data.current.state.text;
+             
+             // temp logging to check if usful for "lift extruder at pause" requirement
+             //console.log(printer.name + " z is at: :" + e.data.current.currentZ);
              //console.log(printer.name + " state:" + state);
 
              /* Temperatures, not send all the time !
@@ -193,7 +196,7 @@ function createSock(printer) {
                     // console.log(printer.name + " bed temp :" + e.data.current.temps[0].bed.actual);
                     printer.last_high_temp = Math.round(e.data.current.temps[0].bed.actual);
                 }
-                console.log(printer.name + " highest temp :" + printer.last_high_temp);
+                //console.log(printer.name + " highest temp :" + printer.last_high_temp);
              } 
                               
              // -- send state and completion to particle.
