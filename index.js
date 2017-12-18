@@ -40,7 +40,7 @@ fs.stat(cfg_file, function(err, stat) {
                             }
                         }
                         
-                      } else if (data.name == 'Makerspace_state_request') {
+                      } else if (data.name == 'Octoprint_state_request') {
                         var tgt_state = data.data;
                         var sender    = data.coreid;  
                         var printer   = {};
