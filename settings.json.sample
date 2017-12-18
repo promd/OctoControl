@@ -8,5 +8,9 @@
     ],
     "cloud_session" : {  "debug"     : true,
                          "user"      : "particle user name",
-                         "pass"      : "particle password" }
+                         "pass"      : "particle password" },
+    "button_settings" : { "dim"        : "* 19 * * *",
+                          "dim_led"    : 64,
+                          "bright"     : "* 7 * * 1-5",
+                          "bright_led" : 128},
 }

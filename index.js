@@ -2,6 +2,7 @@ const SockJS = require('sockjs-client');
 const http = require('http-request');
 const Particle = require('particle-api-js');
 const fs = require('fs');
+const schedule = require('node-schedule');
 
 var particle        = new Particle();
 var defaults        = {};
@@ -19,6 +20,46 @@ fs.stat(cfg_file, function(err, stat) {
             console.log("Starting Sock to " + printer.name);
             createSock(printer);
         }
+
+        // -- schedule events (currently: dim LEDs off-hours)
+        var j_dimmed = schedule.scheduleJob(defaults.button_settings.dim, function(){
+            if (cloud_connected) {
+                for (var i = 0; i < defaults.printers.length; i++) {
+                    var publishEventPr = particle.publishEvent({    name: 'Octoprint_dim_LED', 
+                                                                    data: defaults.button_settings.dim_led + '|' + defaults.printers[i].coreid, 
+                                                                    auth: defaults.cloud_session.token, 
+                                                                    isPrivate : true });
+                    publishEventPr.then(
+                      function(data) {
+                          console.log('Dimmed LED for ' + defaults.printers[i].coreid + ' to ' + defaults.button_settings.dim_led);
+                      },
+                      function(err) {
+                        console.log("Failed to publish event: " + err)
+                      }
+                    );                
+                }  
+            } else 
+                console.log("No connection to cloud, not adjusting LED brightness.");
+        });
+        var j_bright = schedule.scheduleJob(defaults.button_settings.bright, function(){
+            if (cloud_connected) {
+                for (var i = 0; i < defaults.printers.length; i++) {
+                    var publishEventPr = particle.publishEvent({    name: 'Octoprint_dim_LED', 
+                                                                    data: defaults.button_settings.bright_led + '|' + defaults.printers[i].coreid, 
+                                                                    auth: defaults.cloud_session.token, 
+                                                                    isPrivate : true });
+                    publishEventPr.then(
+                      function(data) {
+                          console.log('Dimmed LED for ' + defaults.printers[i].coreid + ' to ' + defaults.button_settings.bright_led);
+                      },
+                      function(err) {
+                        console.log("Failed to publish event: " + err)
+                      }
+                    );                
+                } 
+            } else 
+                console.log("No connection to cloud, not adjusting LED brightness."); 
+        });
 
         particle.login({username: defaults.cloud_session.user, password: defaults.cloud_session.pass}).then(
             function(data) {
@@ -162,7 +203,6 @@ function createSock(printer) {
                     break;
                 case "Printing":
                     var pct   = Math.round(e.data.current.progress.completion);
-                    // --- if this is "100", we could keep that status. If entering "Operational" with a history of "100%", it would mean the print was ok and complete ?
                     //console.log(printer.name + " completion:"+ pct);
                     state_code = 2;
                     break;

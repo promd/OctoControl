@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "http-request": "^0.7.0",
+    "node-schedule": "^1.2.5",
     "particle-api-js": "^7.0.1",
     "sockjs-client": "^1.1.4"
   }
